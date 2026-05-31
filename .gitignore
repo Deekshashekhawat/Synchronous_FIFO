@@ -1,0 +1,14 @@
+# Backup files
+*.bak
+
+# Simulation files
+*.vcd
+*.wlf
+
+# ModelSim/Questa
+work/
+*.mpf
+*.mti
+
+# Logs
+*.log
