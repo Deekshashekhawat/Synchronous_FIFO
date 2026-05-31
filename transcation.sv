@@ -1,0 +1,25 @@
+//transaction class
+`ifndef TRANSCATION_SV
+`define TRANSCATION_SV
+class transcation#(parameter data_width=32);
+rand bit cs;//chip select
+ rand bit r_en;
+ rand bit w_en;
+  rand bit [data_width-1:0]data_in;
+  bit full,empty;
+  bit [data_width-1:0]data_out;
+  
+  constraint c1 { w_en != r_en; }
+  constraint c2 {w_en dist {1 := 70, 0 := 30};}
+  
+  function void display(input string name);
+   $display("-----------------------");
+   $display("%s",name);
+   $display("sim time::%t",$time);
+   
+   $display("-----------------------");
+  endfunction
+  
+endclass
+
+`endif

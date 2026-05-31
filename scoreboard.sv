@@ -1,0 +1,42 @@
+//scoreboard class
+`include "transcation.sv"
+class scoreboard;
+mailbox mon2scor;
+int no_of_transaction;
+bit [31:0] ref_queue[$];  // reference model
+//constractor
+function new(mailbox mon2scor);
+this.mon2scor=mon2scor;
+endfunction
+
+task main();
+transcation t;
+bit [31:0] expected;
+forever begin
+mon2scor.get(t);
+
+  // WRITE operation
+      if(t.w_en) begin
+        ref_queue.push_back(t.data_in);
+        $display("SCB: Write detected, pushed %0d into reference queue", t.data_in);
+      end
+
+  //read operation
+  if(t.r_en) begin
+        if(ref_queue.size() == 0) begin
+          $display("ERROR: FIFO Underflow");
+        end
+        else begin
+          expected = ref_queue.pop_front();
+
+          if(expected == t.data_out)
+            $display("PASS: expected=%0d actual=%0d", expected, t.data_out);
+          else
+            $display("FAIL: expected=%0d actual=%0d", expected, t.data_out);
+        end
+        end
+no_of_transaction++;
+t.display("Scoreboard");
+end
+endtask
+endclass

@@ -1,0 +1,27 @@
+//generator class
+
+class generator;
+
+rand transcation t;
+mailbox gen2driv;//create a mailbox to send data from geneator to driver
+event ended; //why???
+int repeat_count;//why??????
+
+//customized constructor
+ function new(mailbox gen2driv);
+ this.gen2driv=gen2driv;
+ endfunction
+ 
+ task main();
+repeat(repeat_count) begin
+ t=new();
+ if(!t.randomize())
+ $fatal("Gen:ramdomization fail");
+ t.display("Generator");
+ gen2driv.put(t);
+ end
+ ->ended;
+ endtask
+ 
+endclass
+
